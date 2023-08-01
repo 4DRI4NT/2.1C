@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+
+    <script type="importmap">
+        {
+          "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+          }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: whitesmoke;
+        }
+        h1 {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 3vw;
+            margin-left: 5vw;
+        }
+        p {
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1vw;  
+            margin-left: 5vw;
+            margin-top: 1vw;
+            margin-bottom: 2vw
+        }
+        ul {
+            list-style-type: square;
+        }
+        li {
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1.5vw;
+        }
+        input {
+            background-color: white;
+            color: black;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1.5vw;
+        }
+        input[type=checkbox] {
+            height: 1.5vw;
+            width: 1.5vw;
+            float:inline-start;
+            margin-right: 0.5vw;
+        }
+        .taskInput {
+            width: 28vw;
+        }
+        .addButton {
+            background-color: white;
+            color: black;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1vw;
+            width: 8vw;
+            margin-left: 10vw;
+            margin-top: 0.7vw;
+            margin-bottom: 2vw;
+        }
+        .cross {
+            background-color: red;
+            height: 1.6vw;
+            width: 1.6vw;
+            font-weight: bold;
+            font-size: 1.2vw;
+            text-align: center;
+            margin-right: 0.5vw;
+            transform: translateY(0.1vw);
+            float:inline-start;
+        }
+        .crossItem {
+            text-decoration: solid line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ title }}</h1>
+
+        <form @submit.prevent="addItem">
+            <input class="taskInput" type="text" v-model="task" required>
+            <br>
+            <p v-show="task==''">Type above to begin adding a task</p>
+            <br>
+            <input type="submit" class="addButton" v-show="task!='' && task!='Type to add a task'" value="Add to List" required>
+        </form>
+
+        <br>
+
+        <ul>
+            <li v-for="item in list" :key="item.id" v-bind:class="[item.complete ? 'crossItem':'null']">
+                {{ item.value }}
+                <input type="checkbox" v-model="item.complete">
+                <button class="cross" @click="removeItem(item.id)" v-show="item.complete">X</button>
+                <br>
+                <br>
+            </li>
+        </ul>
+
+    </div>
+
+    <script type="module">
+        import { createApp } from 'vue'
+
+        let itemId = 0;
+
+        createApp({
+            data() {
+                return {
+                    title: "To-Do List",
+                    task: "",
+                    list: [],
+                };
+            },
+            methods: {
+                addItem(){
+                    this.list.push({
+                        id:  itemId++,
+                        value: this.task,
+                        complete: false
+                    });
+                    this.task = "";
+                },
+                removeItem(id) {
+                    this.list = this.list.filter((t) => t.id !== id)
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>

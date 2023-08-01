@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+
+        <script type="importmap">
+            {
+              "imports": {
+                "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+              }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="app">
+            <h1>{{ title }}</h1>
+
+            <p>{{ num }}</p>
+            <button @click="increment">@click</button>
+
+            <br>
+
+            <p>{{ check }}</p>
+            <input type="checkbox" v-model="check">
+            <p v-show="check">ill only go away if you untick that box^</p>
+
+            <br>
+
+            <p>{{ numbers }}</p>
+            <ul>
+                <li v-for="number in numbers">{{ number }}</li>
+            </ul>
+
+            <input type="text" v-model="flexibleVar">
+            <p v-if="flexibleVar!='change me!'">{{ flexibleVar }}</p>
+            <p v-else>Type here^ and ill mimic it!</p>
+
+        </div>
+       
+        <script type="module">
+            import { createApp } from 'vue'
+
+            createApp({
+                data() {
+                    return {
+                        title: "whoa, these are variables from vue",
+                        num: 0,
+                        check: true,
+                        numbers: ["one", "two", "three", "four", "five", "six"],
+                        flexibleVar: "change me!",
+                        
+                    };
+                },
+                methods: {
+                    increment(){
+                        this.num++
+                    }
+                }
+            }).mount("#app");
+        </script>
+    </body>
+</html>
